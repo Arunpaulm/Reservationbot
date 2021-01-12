@@ -43,16 +43,16 @@ def validate_finite_values_entity(values: List[Dict], supported_values: List[str
             document_name = value['value']
             if value['value'] == document_name in supported_values:
                 invalid_ids_stated.append(document_name.upper())
-        if pick_first:
-            break
+        # if pick_first:
+        #     break
 
     '''
     Checking the values based on valid data 
     filled and partially_filled flags will be set with boolean data
     '''
-    validationCondition = not len(values) == 0 and (pick_first and len(
-        invalid_ids_stated) > 0 or len(values) == len(invalid_ids_stated))
-    # validationCondition = not len(values) == 0 and len(values) == len(invalid_ids_stated)
+    # validationCondition = not len(values) == 0 and (pick_first and len(
+    #     invalid_ids_stated) > 0 or len(values) == len(invalid_ids_stated))
+    validationCondition = not len(values) == 0 and len(values) == len(invalid_ids_stated)
     if validationCondition:
         filled = True
         partially_filled = False
@@ -61,15 +61,18 @@ def validate_finite_values_entity(values: List[Dict], supported_values: List[str
         }
         invalid_trigger = ''
     elif len(invalid_ids_stated) > 0:
-        params = {
-            key: invalid_ids_stated
-        }
+        if support_multiple or pick_first:
+            params = {
+                key: invalid_ids_stated
+            }
+
     # Finalizing the result by checking
-    if pick_first == True:
-        params[key] = ''.join(map(str, params[key]))
+    if pick_first == True and key in params:
+        # params[key] = ''.join(map(str, params[key]))
+        params[key] = params[key][0]
 
     # removed the key from value it it is empty
-    if len(params[key]) == 0:
+    if len(invalid_ids_stated) == 0 and key in params:
         del params[key]
     # (filled, partially_filled, trigger, params)
     return (filled, partially_filled, invalid_trigger, params)

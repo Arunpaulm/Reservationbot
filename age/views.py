@@ -28,7 +28,7 @@ def validate_numeric_entity(values: List[Dict], invalid_trigger: str = None, key
     partially_filled = False
     # age_stated will hold the valid age
     age_stated = list()
-    params = {key: []}
+    params = dict()
     kwargs_items = {}
     # unwraping kwargs to kwargs_items dict
     for ikey, ivalue in kwargs.items():
@@ -46,16 +46,16 @@ def validate_numeric_entity(values: List[Dict], invalid_trigger: str = None, key
             is_valid_age = eval(constraint.replace(var_name, str(age)))
             if is_valid_age or constraint == '':
                 age_stated.append(age)
-        if pick_first:
-            break
+        # if pick_first:
+        #     break
 
     '''
     Checking the values based on valid data 
     filled and partially_filled flags will be set with boolean data
     '''
-    validationCondition = not len(values) == 0 and (
-        pick_first and len(age_stated) > 0 or len(values) == len(age_stated))
-    # validationCondition = not len(values) == 0 and  len(values) == len(age_stated)
+    # validationCondition = not len(values) == 0 and (
+    #     pick_first and len(age_stated) > 0 or len(values) == len(age_stated))
+    validationCondition = not len(values) == 0 and  len(values) == len(age_stated)
     if validationCondition:
         filled = True
         partially_filled = False
@@ -64,16 +64,18 @@ def validate_numeric_entity(values: List[Dict], invalid_trigger: str = None, key
         }
         invalid_trigger = ''
     elif len(age_stated) > 0:
-        params = {
-            key: age_stated
-        }
+        if not support_multiple or pick_first:
+            params = {
+                key: age_stated
+            }
 
     # Finalizing the result by checking
-    if pick_first == True:
-        params[key] = ''.join(map(str, params[key]))
+    if pick_first == True and key in params:
+        # params[key] = ''.join(map(str, params[key]))
+        params[key] = params[key][0]
 
     # removed the key from value it it is empty
-    if len(params[key]) == 0:
+    if len(age_stated) == 0 and key in params:
         del params[key]
     # (filled, partially_filled, trigger, params)
     return (filled, partially_filled, invalid_trigger, params)
