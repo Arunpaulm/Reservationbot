@@ -1,6 +1,6 @@
 # Reservationbot
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A python project to manage and validate the data provided by the Natural language processing (NLP). # Reservationbot provides multiple API endpoints with a parser based on use cases
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A python project to manage and validate the data provided by the Natural language processing (NLP). Reservationbot provides multiple API endpoints with a parser based on use cases.
 
 **Requirements:**
 
@@ -42,7 +42,7 @@ sudo docker-compose up
 
 ```
 
-note: using --detach runs the container in background
+note: using --detach runs the container in background. to attach use `docker attach reservationbot_reservationbot_1`
 
 - Build the project within docker container
 
@@ -119,9 +119,10 @@ sudo docker-compose images
 ```
 
 **Docker:**
-
-> Docker Repository: arunpaulm/reservationbot
-> Tag: latest
-> Docker image size: 929.45 MB
-> Linked with : Github
-> Autobuild trigger enabled with master branch
+```
+ Docker Repository: arunpaulm/reservationbot
+ Tag: latest
+ Docker image size: 929.45 MB
+ Linked with : Github
+ Autobuild trigger enabled with master branch
+```
