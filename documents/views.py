@@ -2,15 +2,20 @@ from django.shortcuts import render
 
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.request import Request
+# from rest_framework.request import Request
 from rest_framework.decorators import api_view
-from rest_framework import serializers
+# from rest_framework import serializers
 
-from .models import Document
+# from .models import Document
 from .serializers import DocumentSerializer
 
 from typing import List, Dict, Callable, Tuple
 SlotValidationResult = Tuple[bool, bool, str, Dict]
+
+'''
+validate_finite_values_entity function performs the processing data provided in the request
+returns (filled, partially_filled, trigger, params) => (bool, bool, str, Dict)
+'''
 
 
 def validate_finite_values_entity(values: List[Dict], supported_values: List[str] = None,
@@ -22,6 +27,10 @@ def validate_finite_values_entity(values: List[Dict], supported_values: List[str
     # invalid_ids_stated will hold the valid document type
     invalid_ids_stated = list()
     params = dict()
+    kwargs_items = {}
+    # unwraping kwargs to kwargs_items dict
+    for ikey, ivalue in kwargs.items():
+        kwargs_items[ikey] = ivalue
 
     '''
     The for loop iterates the values from request and
@@ -29,7 +38,7 @@ def validate_finite_values_entity(values: List[Dict], supported_values: List[str
     in positive scenario - values are appended to invalid_ids_stated variable
     '''
     for value in values:
-        if value['entity_type'] == 'id':
+        if value['entity_type'] in kwargs_items['type']:
             partially_filled = True
             document_name = value['value']
             if value['value'] == document_name in supported_values:
@@ -41,7 +50,8 @@ def validate_finite_values_entity(values: List[Dict], supported_values: List[str
     Checking the values based on valid data 
     filled and partially_filled flags will be set with boolean data
     '''
-    validationCondition = not len(values) == 0 and ( pick_first and len(invalid_ids_stated) > 0 or len(values) == len(invalid_ids_stated))
+    validationCondition = not len(values) == 0 and (pick_first and len(
+        invalid_ids_stated) > 0 or len(values) == len(invalid_ids_stated))
     # validationCondition = not len(values) == 0 and len(values) == len(invalid_ids_stated)
     if validationCondition:
         filled = True
@@ -107,28 +117,18 @@ Body:
 
 
 @api_view(['POST'])
-def getDocumentsDetails(request, pk=None, format=None):
+def getDocumentsDetails(request):
     """
-    List all code snippets, or create a new snippet.
+    Handler for POST request from endpoint - finite_values_entity
     """
     if request.method == 'POST':
-        # serializer_context = {
-        #     'request': request,
-        # }
-        # doc = Document.objects.all()
         print(request.data)
-        filled, partially_filled, trigger, parameters = validate_finite_values_entity(
-            request.data['values'], request.data['supported_values'], request.data['invalid_trigger'], request.data['key'], request.data['support_multiple'], request.data['pick_first'])
+        # , context=serializer_context) # data=request.data
+        serializer = DocumentSerializer(data=request.data)
+        if serializer.is_valid():
+            filled, partially_filled, trigger, parameters = validate_finite_values_entity(
+                serializer.data['values'], serializer.data['supported_values'], serializer.data['invalid_trigger'], serializer.data['key'], serializer.data['support_multiple'], serializer.data['pick_first'], type=serializer.data['type'])
 
-        return Response({'filled': filled, 'partially_filled': partially_filled, 'trigger': trigger, 'parameters': parameters}, status=status.HTTP_200_OK)
-    #     serializer = DocumentSerializer(data=request.data) #, context=serializer_context) # data=request.data
-    #     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    #     if serializer.is_valid():
-    #         print('valid')
-    #         # serializer.save()
-    #         # validate_finite_values_entity(serializer.data['values'],serializer.data['values'],serializer.data['values'],serializer.data['values'],serializer.data['values'],serializer.data['values'],)
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     else :
-    #         print(serializer.validated_data)
-    #         return Response({ "error": serializer.data['invalid_trigger'] })
-    # return Response({ "internal error" })
+            return Response({'filled': filled, 'partially_filled': partially_filled, 'trigger': trigger, 'parameters': parameters}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

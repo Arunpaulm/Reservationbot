@@ -1,6 +1,6 @@
 # Reservationbot
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A python project to mange and validate the data provided by the Natural language processing (NLP). # Reservationbot provides multiple API endpoints with a parser based on use cases
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A python project to manage and validate the data provided by the Natural language processing (NLP). # Reservationbot provides multiple API endpoints with a parser based on use cases
 
 **Requirements:**
 
@@ -29,19 +29,35 @@ Follow the intructions as mentioned below:
 - Download the project to local
 
 ```cmd
+
 $ git clone https://github.com/Arunpaulm/Reservationbot.git
+
 ```
 
 - Initiate the docker container
 
 ```cmd
+
 sudo docker-compose up
+
 ```
 
-- Build the project in docket container
+note: using --detach runs the container in background
+
+- Build the project within docker container
 
 ```cmd
+
 sudo docker-compose build
+
+```
+
+- List the project in docker container
+
+```cmd
+
+sudo docker-compose images
+
 ```
 
 - Use the http://localhost:8080/ to check django up status
@@ -66,11 +82,11 @@ sudo docker-compose build
 
 ```response
 {
-	"filled":  true,
-	"partially_filled":  false,
-	"trigger":  "",
-	"parameters":  {
-		"age_stated":  "21"
+	"filled": true,
+	"partially_filled": false,
+	"trigger": "",
+	"parameters": {
+		"age_stated": "21"
 	}
 }
 ```
@@ -93,11 +109,19 @@ sudo docker-compose build
 
 ```response
 {
-	"filled":  true,
-	"partially_filled":  false,
-	"trigger":  "",
-	"parameters":  {
-		"age_stated":  "21"
+	"filled": true,
+	"partially_filled": false,
+	"trigger": "",
+	"parameters": {
+		"age_stated": "21"
 	}
 }
 ```
+
+**Docker:**
+
+> Docker Repository: arunpaulm/reservationbot
+> Tag: latest
+> Docker image size: 929.45 MB
+> Linked with : Github
+> Autobuild trigger enabled with master branch
