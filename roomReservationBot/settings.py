@@ -109,9 +109,10 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.DjangoModelPermissions',
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
-      'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': (
     #    'rest_framework.authentication.TokenAuthentication',
    ),
+   'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 # Internationalization

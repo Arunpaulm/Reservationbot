@@ -17,7 +17,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.getDocumentsDetails, name = 'document')
+    path('', views.getDocumentsDetails, name = 'documents')
 ]
 
 # from django.urls import path, include
