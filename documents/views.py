@@ -61,7 +61,7 @@ def validate_finite_values_entity(values: List[Dict], supported_values: List[str
         }
         invalid_trigger = ''
     elif len(invalid_ids_stated) > 0:
-        if support_multiple or pick_first:
+        if not support_multiple or pick_first:
             params = {
                 key: invalid_ids_stated
             }

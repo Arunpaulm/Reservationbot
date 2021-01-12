@@ -10,3 +10,5 @@ COPY requirements.txt /roomReservationBot/
 RUN pip install -r requirements.txt
 
 COPY . /roomReservationBot/
+
+RUN python manage.py test
